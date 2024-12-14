@@ -28,7 +28,7 @@ Next, for the broker to work, you need to:
 
 
 >IMPORTANT: Sometimes the exercise server and the entities server start before the database is ready and the database initialization fails. For guarantees, restart both containers
-```docker restart exercise_server entities_server``
+```docker restart exercise_server entities_server```
 
 In the postman collection you have the flow of the app's business process.
 The databases are empty, so it should be possible to run each of the endpoints in the collection without making any changes. 
