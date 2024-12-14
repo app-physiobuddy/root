@@ -1,0 +1,930 @@
+{
+	"info": {
+		"_postman_id": "bfa28e3e-72d7-44f9-b4fd-e366ed0cde00",
+		"name": "physio_buddy_business_process",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32310932"
+	},
+	"item": [
+		{
+			"name": "01 - Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "// Registar os 3\n\n{\"email\":\"company@gmsail.com\", \"password\": 1234, \"name\":\"Clinica\", \"role\":\"company\"}\n\n//{\"email\":\"therapist@gmsail.com\", \"password\": 1234, \"name\":\"Fisio\", \"role\":\"therapist\"}\n//{\"email\":\"ric6.linhares@gmail.com\", \"password\": 1234, \"name\":\"Ricardo\", \"role\":\"patient\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"auth",
+						"register"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "gamil",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "01 - Register 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "// Registar os 3\n\n//{\"email\":\"company@gmsail.com\", \"password\": 1234, \"name\":\"Clinica\", \"role\":\"company\"}\n\n{\"email\":\"ric6.linhares@gmail.com\", \"password\": 1234, \"name\":\"Ricardo\", \"role\":\"patient\"}\n//{\"email\":\"therapist@gmsail.com\", \"password\": 1234, \"name\":\"Fisio\", \"role\":\"therapist\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"auth",
+						"register"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "gamil",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "01 - Register 3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "// Registar os 3\n\n//{\"email\":\"company@gmsail.com\", \"password\": 1234, \"name\":\"Clinica\", \"role\":\"company\"}\n\n//{\"email\":\"ric6.linhares@gmail.com\", \"password\": 1234, \"name\":\"Ricardo\", \"role\":\"patient\"}\n{\"email\":\"therapist@gmsail.com\", \"password\": 1234, \"name\":\"Fisio\", \"role\":\"therapist\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"auth",
+						"register"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "gamil",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02 - Login (company)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"pm.collectionVariables.set(\"token\", response.token);",
+							"pm.collectionVariables.set(\"company_user_id\", response.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"company@gmsail.com\", \"password\": 1234}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03 - Create a company account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\n    \"data\": {\n        \"name\":\"Clinica xpto\",\n        \"street\":\"rua x\",\n        \"zip_code\":\"5555-111\",\n        \"city\":\"Barcelos\",\n        \"phone_number\":\"9292929\"\n        }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/companies/",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"companies",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04 - Company adds therapist",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "// A empresa na sua aplicação, adiciona um fisioterapeuta passando o seu email e outros dados\n\n{\n    //\"therapistEmail\":\"wrongEmail@mail.com\", // não exist\n    //\"therapistEmail\":\"ric6.linhares@gmail\", // é paciente\n    \"therapistEmail\":\"therapist@gmsail.com\",\n\n    \"data\": {\n        \"name\": \"superTherapist\",\n        \"phone\":\"12345609\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/companies/{{company_user_id}}/therapists",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"companies",
+						"{{company_user_id}}",
+						"therapists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05 - Login (therapist)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"pm.collectionVariables.set(\"token\", response.token);",
+							"pm.collectionVariables.set(\"therapist_user_id\", response.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"therapist@gmsail.com\", \"password\": 1234}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05.2 - Therapist sees his profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"pm.collectionVariables.set(\"company_entity_id\", response.message.company_id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/therapists/{{therapist_user_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"therapists",
+						"{{therapist_user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "06 - Therapist adds Patient",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "// O Fisio na sua aplicação, adiciona um paciente passando o seu email e outros dados\n\n{\n    \"patientEmail\":\"ric6.linhares@gmail.com\",\n\n    \"data\": {\n        \"name\":\"Ricardo\",\n        \"phone_numb\":12345609,\n        \"age\": 88,\n        \"nif\": 123456689\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/therapists/{{therapist_user_id}}/patients",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"therapists",
+						"{{therapist_user_id}}",
+						"patients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "07 - Therapist creates new category (of exercise)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "// Criar duas categorias para o endpoint seguinte\n// a info do endpoints vem the 05.02 user_id e company_id\n{\n    //\"data\" :{\"desc\":\"engloba todos os exercícios das costas\", \"name\":\"costa\"}\n    \"data\" :{\"desc\":\"engloba todos os exercícios das mãos\", \"name\":\"mãos\"}\n\n   \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/therapists/{{therapist_user_id}}/companies/{{company_entity_id}}/categories",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"therapists",
+						"{{therapist_user_id}}",
+						"companies",
+						"{{company_entity_id}}",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "07.2 - Therapist gets all categories of his company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"pm.collectionVariables.set(\"category_1_id\", response.message[0].id_category);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/therapists/{{therapist_user_id}}/companies/{{company_entity_id}}/categories",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"therapists",
+						"{{therapist_user_id}}",
+						"companies",
+						"{{company_entity_id}}",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "08 - Therapist gets all his patients",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"pm.collectionVariables.set(\"selected_patient\", response.message[0].id_pacient);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/therapists/{{therapist_user_id}}/patients",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"therapists",
+						"{{therapist_user_id}}",
+						"patients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "09 - Therapist gets specific Patient",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/therapists/{{therapist_user_id}}/patients/{{selected_patient}}",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"therapists",
+						"{{therapist_user_id}}",
+						"patients",
+						"{{selected_patient}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10 - Therapist creates new exercise",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n    \n    \"data\" :{\"desc\":\"desc\", \"name\":\"exercicio novo\", \"obs\":\"obs\", \"video_dir\":\"https://www.youtube.com/watch?v=Ry-UGHYg7Us\", \n    \"id_category\": {{category_1_id}} // mudar aqui para a categoria escolhida na front-end\n    }\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/therapists/{{therapist_user_id}}/companies/{{company_entity_id}}/exercises",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"therapists",
+						"{{therapist_user_id}}",
+						"companies",
+						"{{company_entity_id}}",
+						"exercises"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10.2 - Therapist gets all exercises of his company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"pm.collectionVariables.set(\"exercise_1\", response.message[0].id_exercise);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/therapists/{{therapist_user_id}}/companies/{{company_entity_id}}/exercises",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"therapists",
+						"{{therapist_user_id}}",
+						"companies",
+						"{{company_entity_id}}",
+						"exercises"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11 - Therapists makes new Plan of Exercises",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"date_start\": \"2024-12-11T00:00:00Z\",\n        \"date_end\": \"2024-12-16T00:00:00Z\",\n        \"plan_exercises\": [\n            {\n                \"id_exercise\": {{exercise_1}},\n                \"exercise_desc\": \"descriçao do exercicio1 no plano\",\n                \"monday\": true,\n                \"wednesday\": true,\n                \"friday\": true\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/therapists/{{therapist_user_id}}/patients/{{selected_patient}}/plans",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"therapists",
+						"{{therapist_user_id}}",
+						"patients",
+						"{{selected_patient}}",
+						"plans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "12 - Login (patient)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"pm.collectionVariables.set(\"token\", response.token);",
+							"pm.collectionVariables.set(\"patient_user_id\", response.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"ric6.linhares@gmail.com\", \"password\": 1234}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "12.02 - Patient User sees all his patients profiles",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"pm.collectionVariables.set(\"patient_selected_patient_profile\", response.message[0].id_pacient);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/patients/{{patient_user_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"patients",
+						"{{patient_user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "13 - Patients gets all Plans",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/patients/{{patient_selected_patient_profile}}/plans",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"patients",
+						"{{patient_selected_patient_profile}}",
+						"plans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "14 - Patient Marks completed exercise routine",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"monday_done\": true,\n        \"tuesday_done\": false,\n        \"thursday_done\": false\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/patients/{{patient_selected_patient_profile}}/plans/1/exercises/1",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"patients",
+						"{{patient_selected_patient_profile}}",
+						"plans",
+						"1",
+						"exercises",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "15 - Therapists sees completed Plan",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{gatewayPort}}/patients/{{selected_patient}}/plans/1",
+					"host": [
+						"localhost"
+					],
+					"port": "{{gatewayPort}}",
+					"path": [
+						"patients",
+						"{{selected_patient}}",
+						"plans",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "v4.public.eyJpZCI6NiwiZW1haWwiOiJjb21wYW55QGdtc2FpbC5jb20iLCJuYW1lIjoicmljYXJkbyIsInJvbGUiOiJjb21wYW55IiwiaWF0IjoiMjAyNC0xMi0wOFQxNzo0NDoyMC4yNDVaIiwiZXhwIjoiMjAyNC0xMi0wOVQxNzo0NDoyMC4yNDVaIn0xLv_Gw36MOaAy8yQg3xl_71mbKwq4XbS2FYl0FOGxIcVIVkvteB8Y5Wm1X1rsbLVUkVH6quVjMv1DGM7mhCgM"
+		},
+		{
+			"key": "company_user_id",
+			"value": ""
+		},
+		{
+			"key": "therapist_user_id",
+			"value": ""
+		},
+		{
+			"key": "category_1_id",
+			"value": ""
+		},
+		{
+			"key": "selected_patient",
+			"value": ""
+		},
+		{
+			"key": "patient_user_id",
+			"value": ""
+		},
+		{
+			"key": "patient_selected_patient_profile",
+			"value": ""
+		},
+		{
+			"key": "plan_id",
+			"value": ""
+		},
+		{
+			"key": "company_entity_id",
+			"value": ""
+		},
+		{
+			"key": "exercise_id",
+			"value": ""
+		},
+		{
+			"key": "exercise_1",
+			"value": ""
+		},
+		{
+			"key": "therapist_entity_id",
+			"value": ""
+		}
+	]
+}
