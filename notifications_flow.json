@@ -1,0 +1,120 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "e62693fe0313589c",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "therapist",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "25b018708b473b0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 340,
+        "y": 240,
+        "wires": [
+            [
+                "d3c0abec3cfb8f70"
+            ]
+        ]
+    },
+    {
+        "id": "6a4b049ed86b7ba8",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "patient",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "25b018708b473b0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 350,
+        "y": 300,
+        "wires": [
+            [
+                "d3c0abec3cfb8f70"
+            ]
+        ]
+    },
+    {
+        "id": "5b9982c696a3e5f1",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "plans",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "25b018708b473b0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 370,
+        "y": 360,
+        "wires": [
+            [
+                "d3c0abec3cfb8f70"
+            ]
+        ]
+    },
+    {
+        "id": "d3c0abec3cfb8f70",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "25b018708b473b0e",
+        "type": "mqtt-broker",
+        "name": "emqx_broker",
+        "broker": "emqx_broker",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]

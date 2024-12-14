@@ -1,0 +1,14 @@
+auth_service
+base_folders
+coordinator_a_service
+coordinator_b_service
+entities_service
+exercise_service
+gateway_service
+video_upload_service
+.env
+.env_auth_db
+.env_entities_db
+.env_exercise_db
+call.sh
+physio_buddy_bussines_logic_postman.mov

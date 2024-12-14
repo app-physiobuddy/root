@@ -1,0 +1,293 @@
+services:
+  exercise_server:
+    build:
+      context: ./exercise_service/app
+      dockerfile: Dockerfile
+    container_name: exercise_server
+    working_dir: /app                     
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      APP_PORT: ${APP_EXERCISE_PORT}           
+      DATABASE_URL: ${EXERCISE_DATABASE_URL}
+      VIDEO_UPLOAD_SERVICE_URL: ${VIDEO_UPLOAD_SERVICE_URL}
+      EMQX_USER: ${EMQX_USER}
+      EMQX_PASSWORD: ${EMQX_PASSWORD}
+      EMQX_PORT: ${EMQX_PORT}
+      EMQX_BROKER_SERVICE_HOST: ${EMQX_BROKER_SERVICE_HOST}
+    ports:
+      - ${APP_EXERCISE_PORT}:${APP_EXERCISE_PORT}
+    depends_on:
+      - exercise_db                                  # Ensure DB is started first
+      - emqx_broker
+    volumes:
+      - ./exercise_service/app:/app               # Persistent volume for Node.js
+    networks:
+      - physiobuddy-network
+    command: ["npm", "run", "dev"]
+    restart: on-failure
+
+  exercise_db:
+    build:
+      context: ./exercise_service/db
+      dockerfile: Dockerfile
+    container_name: exercise_db
+    environment:
+      POSTGRES_DB: ${DB_EXERCISE_POSTGRES_DB}       
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      PGPORT: ${DB_EXERCISE_PORT}
+    volumes:
+      - exercise_db:/var/lib/postgresql/data  # Persistent volume for DB data
+    networks:
+      - physiobuddy-network
+    ports:
+      - ${DB_EXERCISE_PORT}:${DB_EXERCISE_PORT}
+  
+  #### ENTITY SERVICE ####
+  entities_server:
+    build:
+      context: ./entities_service/app
+      dockerfile: Dockerfile
+    container_name: entities_server
+    working_dir: /app                     
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      APP_PORT: ${APP_ENTITIES_PORT}           
+      DATABASE_URL: ${ENTITIES_DATABASE_URL}
+      EMQX_USER: ${EMQX_USER}
+      EMQX_PASSWORD: ${EMQX_PASSWORD}
+      EMQX_PORT: ${EMQX_PORT}
+      EMQX_BROKER_SERVICE_HOST: ${EMQX_BROKER_SERVICE_HOST}
+    ports:
+      - ${APP_ENTITIES_PORT}:${APP_ENTITIES_PORT}
+    depends_on:
+      - entities_db 
+      - emqx_broker                                
+    volumes:
+      - ./entities_service/app:/app               
+    networks:
+      - physiobuddy-network     
+    command: ["npm", "run", "dev"]
+    restart: on-failure
+
+  entities_db:
+    build:
+      context: ./entities_service/db
+      dockerfile: Dockerfile
+    container_name: entities_db
+    environment:
+      POSTGRES_DB: ${DB_ENTITIES_POSTGRES_DB}       
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      PGPORT: ${DB_ENTITIES_PORT}
+    volumes:
+      - entities_db:/var/lib/postgresql/data  # Persistent volume for DB data
+    networks:
+      - physiobuddy-network
+    ports:
+      - ${DB_ENTITIES_PORT}:${DB_ENTITIES_PORT}
+
+  #### AUTH SERVICE ####
+  auth_server:
+    build:
+      context: ./auth_service/app
+      dockerfile: Dockerfile
+    container_name: auth_server
+    working_dir: /app                     
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      APP_PORT: ${APP_AUTH_PORT}
+      DB_HOST: ${DB_AUTH_SERVICE}
+      DB_PORT: ${DB_AUTH_PORT}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}   
+      DB_DATABASE: ${DB_AUTH_POSTGRES_DB}
+      EMAIL: ${EMAIL}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      PASETO_PRIVATE_KEY: ${PASETO_PRIVATE_KEY}
+      PASETO_PUBLIC_KEY: ${PASETO_PUBLIC_KEY} # to delete here        
+    ports:
+      - ${APP_AUTH_PORT}:${APP_AUTH_PORT}
+    depends_on:
+      - auth_db                                 
+    volumes:
+      - ./auth_service/app/src:/app/src       
+      - ./auth_service/app/tests:/app/tests          
+    networks:
+      - physiobuddy-network    
+    command: ["npm", "run", "dev"]
+    restart: on-failure
+
+  auth_db:
+    build:
+      context: ./auth_service/db
+      dockerfile: Dockerfile
+    container_name: auth_db
+    environment:
+      POSTGRES_DB: ${DB_AUTH_POSTGRES_DB}       
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      PGPORT: ${DB_AUTH_PORT}
+    volumes:
+      - auth_db:/var/lib/postgresql/data  # Persistent volume for DB data
+    networks:
+      - physiobuddy-network
+    ports:
+      - ${DB_AUTH_PORT}:${DB_AUTH_PORT}
+
+
+  #### GATEWAY SERVICE ####
+  gateway_service:
+    build:
+      context: ./gateway_service
+      dockerfile: Dockerfile
+    container_name: gateway_service
+    working_dir: /app                     
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      APP_PORT: ${APP_GATEWAY_PORT}
+      PASETO_PUBLIC_KEY: ${PASETO_PUBLIC_KEY}        
+      AUTH_SERVICE_URL: ${AUTH_SERVICE_URL}
+      EXERCISE_SERVICE_URL: ${EXERCISE_SERVICE_URL}
+      ENTITIES_SERVICE_URL: ${ENTITIES_SERVICE_URL}
+      COORDINATOR_A_SERVICE_URL: ${COORDINATOR_A_SERVICE_URL}
+      COORDINATOR_B_SERVICE_URL: ${COORDINATOR_B_SERVICE_URL}
+    ports:
+      - ${APP_GATEWAY_PORT}:${APP_GATEWAY_PORT}
+    depends_on:
+      - auth_server
+      - exercise_server
+      - entities_server                                 
+    volumes:
+      - ./gateway_service/src:/app/src      
+      #- ./gateway_service/dist:/app/dist              
+    networks:
+      - physiobuddy-network        
+    command: ["npm", "run", "dev"]
+    restart: on-failure
+
+  #### COORDINATOR A SERVICE ####
+  coordinator_a_service:
+    build:
+      context: ./coordinator_a_service
+      dockerfile: Dockerfile
+    container_name: coordinator_a_service
+    working_dir: /app                     
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      APP_PORT: ${COORDINATOR_A_PORT}
+      GATEWAY_SERVICE_URL: ${GATEWAY_SERVICE_URL}        
+      AUTH_SERVICE_URL: ${AUTH_SERVICE_URL}
+      EXERCISE_SERVICE_URL: ${EXERCISE_SERVICE_URL}
+      ENTITIES_SERVICE_URL: ${ENTITIES_SERVICE_URL}
+    ports:
+      - ${COORDINATOR_A_PORT}:${COORDINATOR_A_PORT}
+    depends_on:
+      - auth_server
+      - exercise_server
+      - entities_server
+      - gateway_service                                 
+    volumes:
+      - ./coordinator_a_service/src:/app/src               
+    networks:
+      - physiobuddy-network        
+    command: ["npm", "run", "dev"]
+    restart: on-failure
+  
+   #### COORDINATOR B SERVICE ####
+  coordinator_b_service:
+    build:
+      context: ./coordinator_b_service
+      dockerfile: Dockerfile
+    container_name: coordinator_b_service
+    working_dir: /app                     
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      APP_PORT: ${COORDINATOR_B_PORT}
+      GATEWAY_SERVICE_URL: ${GATEWAY_SERVICE_URL}        
+      EXERCISE_SERVICE_URL: ${EXERCISE_SERVICE_URL}
+      ENTITIES_SERVICE_URL: ${ENTITIES_SERVICE_URL}
+    ports:
+      - ${COORDINATOR_B_PORT}:${COORDINATOR_B_PORT}
+    depends_on:
+      - exercise_server
+      - entities_server
+      - gateway_service                                 
+    volumes:
+      - ./coordinator_b_service/src:/app/src               
+    networks:
+      - physiobuddy-network        
+    command: ["npm", "run", "dev"]
+    restart: on-failure
+
+   #### VIDEO-UPLOAD SERVICE ####
+  video_upload_service:
+    build:
+      context: ./video_upload_service
+      dockerfile: Dockerfile
+    container_name: video_upload_service
+    working_dir: /app                     
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      APP_PORT: ${VIDEO_UPLOAD_PORT}
+    ports:
+      - ${VIDEO_UPLOAD_PORT}:${VIDEO_UPLOAD_PORT}
+    depends_on:
+      - exercise_server
+      - gateway_service                                 
+    volumes:
+      - ./video_upload_service/src:/app/src               
+    networks:
+      - physiobuddy-network        
+    command: ["npm", "run", "dev"]
+    restart: on-failure
+  
+  # NOTIFICATIONS
+  node-red:
+    image: nodered/node-red:latest
+    container_name: notifications_service
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ}
+    ports:
+      - 1880:1880
+    networks:
+      - physiobuddy-network
+    volumes:
+      - pb_notifications_service:/data
+      - ./notifications_flow.json:/data/flows.json
+
+  emqx_broker:
+    image: emqx:latest
+    container_name: emqx_broker
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx", "ctl", "status"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    environment:
+      EMQX_DASHBOARD__DEFAULT_USERNAME: ${EMQX_DASHBOARD__USERNAME}
+      EMQX_DASHBOARD__DEFAULT_PASSWORD: ${EMQX_DASHBOARD__PASSWORD}
+    networks:
+      - physiobuddy-network
+    ports:
+      - ${EMQX_PORT}:${EMQX_PORT}
+      - 18083:18083 
+     # - 8083:8083
+     # - 8084:8084
+     # - 8883:8883
+    volumes:
+      - pb_emqx_broker_data:/opt/emqx/data
+      - pb_emqx_broker_log:/opt/emqx/log
+volumes:
+  exercise_db:
+  entities_db:
+  auth_db:
+  video_upload:
+  pb_notifications_service:
+  pb_emqx_broker_data:
+  pb_emqx_broker_log:
+
+networks:
+  physiobuddy-network:
