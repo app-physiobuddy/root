@@ -16,3 +16,20 @@ Na coleção do postman tem a flow do processo de negócio da app.
 As bases de dados estão vazias, pelo que deverá ser possivel correr cada um dos endpoints da coleção sem fazer nenhuma alteração. 
 Adicionalmente, esta coleção do postman está pronta para correr automáticamente (_run collection_) e testar todos os endpoints rapidamente.
 
+# Initialize the application
+
+This is the root folder, all other repositories must be coloned as children of this folder.
+
+- 1. make the .env according to the .env_example
+
+Next, for the broker to work, you need to:
+- 1. open the dashboard with user:admin and pass:password
+- 2. create an authentication user with all the _default_ steps and with a user and password (superuser=false) which will then also be placed in the node-red (notifications service)
+
+
+>IMPORTANT: Sometimes the exercise server and the entities server start before the database is ready and the database initialization fails. For guarantees, restart both containers
+```docker restart exercise_server entities_server``
+
+In the postman collection you have the flow of the app's business process.
+The databases are empty, so it should be possible to run each of the endpoints in the collection without making any changes. 
+In addition, this postman collection is ready to run automatically (_run collection_) and test all the endpoints quickly.
