@@ -16,10 +16,6 @@ Na coleção do postman tem a flow do processo de negócio da app.
 As bases de dados estão vazias, pelo que deverá ser possivel correr cada um dos endpoints da coleção sem fazer nenhuma alteração. 
 Adicionalmente, esta coleção do postman está pronta para correr automáticamente (_run collection_) e testar todos os endpoints rapidamente.
 
-## Architecture
-
-![System architecture](assets/arqv2.png)
-
 
 # Initialize the application
 
