@@ -9,15 +9,8 @@ port_mapping = {
 
 
 def manage_containers(containers_info, network_name, volumes_prefix="physio_buddy_"):
-    """
-    Manages Docker containers: stops, removes, and recreates with updated volumes.
-
-    Args:
-        containers_info (list): List of tuples (container_name, image_name).
-        network_name (str): Docker network name.
-        volumes_prefix (str): Prefix for Docker volume names.
-    """
     for container_name, image_name in containers_info:
+
         # Load environment file for the container if it exists
         env_file = f".env_{container_name}"
         env_args = ["--env-file", env_file] if os.path.exists(env_file) else []
@@ -70,9 +63,6 @@ def manage_containers(containers_info, network_name, volumes_prefix="physio_budd
 
 
 def main():
-    """
-    Main function to manage Docker containers and volumes.
-    """
     containers = [
         ("entities_db", "physio_buddy-entities_db"),
         ("exercise_db", "physio_buddy-exercise_db"),
