@@ -230,13 +230,18 @@ services:
     environment:
       NODE_ENV: ${NODE_ENV}
       APP_PORT: ${VIDEO_UPLOAD_PORT}
+      EMQX_USER: ${EMQX_USER}
+      EMQX_PASSWORD: ${EMQX_PASSWORD}
+      EMQX_PORT: ${EMQX_PORT}
+      EMQX_BROKER_SERVICE_HOST: ${EMQX_BROKER_SERVICE_HOST}
     ports:
       - ${VIDEO_UPLOAD_PORT}:${VIDEO_UPLOAD_PORT}
     depends_on:
       - exercise_server
       - gateway_service                                 
     volumes:
-      - ./video_upload_service/src:/app/src               
+      - ./video_upload_service/src:/app/src    
+      - ./video_upload_service/videos:/app/videos           
     networks:
       - physiobuddy-network        
     command: ["npm", "run", "dev"]
@@ -280,6 +285,37 @@ services:
     volumes:
       - pb_emqx_broker_data:/opt/emqx/data
       - pb_emqx_broker_log:/opt/emqx/log
+    
+  redis_a:
+    image: redis
+    container_name: redis_a
+    restart: unless-stopped
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_PORT: ${REDIS_PORT_A}
+    networks:
+      - physiobuddy-network
+    ports:
+      - ${REDIS_PORT_A}:${REDIS_PORT_A}
+    volumes:
+      - redis-data_a:/data
+  
+  redis_b:
+    image: redis
+    container_name: redis_b
+    restart: unless-stopped
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_PORT: ${REDIS_PORT_B}
+    networks:
+      - physiobuddy-network
+    ports:
+      - ${REDIS_PORT_B}:${REDIS_PORT_B}
+    volumes:
+      - redis-data_b:/data
+    
+    
+
 volumes:
   exercise_db:
   entities_db:
@@ -288,6 +324,8 @@ volumes:
   pb_notifications_service:
   pb_emqx_broker_data:
   pb_emqx_broker_log:
+  redis-data_b:
+  redis-data_a:
 
 networks:
   physiobuddy-network:
