@@ -207,6 +207,7 @@ services:
       GATEWAY_SERVICE_URL: ${GATEWAY_SERVICE_URL}        
       EXERCISE_SERVICE_URL: ${EXERCISE_SERVICE_URL}
       ENTITIES_SERVICE_URL: ${ENTITIES_SERVICE_URL}
+      REDIS_URL: ${REDIS_B_URL}
     ports:
       - ${COORDINATOR_B_PORT}:${COORDINATOR_B_PORT}
     depends_on:
@@ -296,7 +297,7 @@ services:
     networks:
       - physiobuddy-network
     ports:
-      - ${REDIS_PORT_A}:${REDIS_PORT_A}
+      - ${REDIS_PORT_A}:6379
     volumes:
       - redis-data_a:/data
   
@@ -310,7 +311,7 @@ services:
     networks:
       - physiobuddy-network
     ports:
-      - ${REDIS_PORT_B}:${REDIS_PORT_B}
+      - ${REDIS_PORT_B}:6379
     volumes:
       - redis-data_b:/data
     
