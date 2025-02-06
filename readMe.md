@@ -16,6 +16,12 @@ Na coleção do postman tem a flow do processo de negócio da app.
 As bases de dados estão vazias, pelo que deverá ser possivel correr cada um dos endpoints da coleção sem fazer nenhuma alteração. 
 Adicionalmente, esta coleção do postman está pronta para correr automáticamente (_run collection_) e testar todos os endpoints rapidamente.
 
+## Modificações para a disciplina de Projeto de Computação na Cloud
+- adicionado redis cache no service de coordenação B, no controlador therapistGetsAllExercisesWithCompanyUserId
+- adicionado serviço de upload, integrado com message broker
+    - exposição para apps de terceiros: é a mesma ideia, por isso não implementei
+- comunicação por tsl (não implementado)
+
 ## Architecture
 
 ![System architecture](https://drive.usercontent.google.com/download?id=1K5VnpWd0pTKfu1YP1z5kXTc3v7XVfBOe&export=view)
