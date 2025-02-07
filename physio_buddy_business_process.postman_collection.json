@@ -558,6 +558,46 @@
 			"response": []
 		},
 		{
+			"name": "10Versao2 - Therapist creates a new exercise",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "video",
+							"type": "file",
+							"src": "postman-cloud:///1efd75eb-c62b-4d60-bcd1-238a14af5cf1"
+						},
+						{
+							"key": "data",
+							"value": "{\n  \"desc\": \"desc\",\n  \"name\": \"exercicio novo\",\n  \"obs\": \"obs\",\n  \"video_dir\": \"\",\n  \"id_category\": 1,\n  \"physio_id\": 1\n}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3006/therapists/{{therapist_user_id}}/companies/{{company_user_id}}/exercises",
+					"host": [
+						"localhost"
+					],
+					"port": "3006",
+					"path": [
+						"therapists",
+						"{{therapist_user_id}}",
+						"companies",
+						"{{company_user_id}}",
+						"exercises"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "10.2 - Therapist gets all exercises of his company",
 			"event": [
 				{
