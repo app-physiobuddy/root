@@ -4,7 +4,7 @@ Esta é a pasta root, todos os outros repositórios devem ser colonados como fil
 
 - 1. Fazer as .env de acordo com o .env_example
 
-Depois, para o broker funcionar, é necessário:
+Depois, para o broker (EMQX mqtt) funcionar, é necessário:
 - 1. Abrir o dashboard com user:admin e pass:password
 - 2. Criar utilizador de autenticação com todos os passos _default_ e com user e password (superuser=false) que depois serão também colocados no node-red (notifications service)
 
@@ -16,24 +16,27 @@ Na coleção do postman tem a flow do processo de negócio da app.
 As bases de dados estão vazias, pelo que deverá ser possivel correr cada um dos endpoints da coleção sem fazer nenhuma alteração. 
 Adicionalmente, esta coleção do postman está pronta para correr automáticamente (_run collection_) e testar todos os endpoints rapidamente.
 
-## Modificações para a disciplina de Projeto de Computação na Cloud
-- adicionado redis cache no service de coordenação B, no controlador therapistGetsAllExercisesWithCompanyUserId
-- adicionado serviço de upload, integrado com message broker
-    - exposição para apps de terceiros: é a mesma ideia, por isso não implementei
-- comunicação por tsl (não implementado)
 
-## Architecture
 
-![System architecture](https://drive.usercontent.google.com/download?id=1K5VnpWd0pTKfu1YP1z5kXTc3v7XVfBOe&export=view)
+### Architecture (second iteration)
 
+Most recent updates are in red color. The project's architecture was reviewed to resolve problems and make improvements, culminating in:
+- adding caching (redis) to the Coordination services. This was only implemented in coordination service B, in the therapistGetsAllExercisesWithCompanyUserId controller.
+- upload service added and implemented, integrated with _message broker_
+    - Interoperability with third-party apps: it's the same idea, so I didn't implement it
+- tsl secure communication (not implemented in dev)
+
+
+<img src="https://drive.usercontent.google.com/download?id=1MGUxqFsmQbl4iMZhmjhtudlh6Ai92L-Q&export=view" width="600"/>
 
 # Initialize the application
+
 
 This is the root folder, all other repositories must be coloned as children of this folder.
 
 - 1. make the .env according to the .env_example
 
-Next, for the broker to work, you need to:
+Next, for the broker (EMQX mqtt) to work, you need to:
 - 1. open the dashboard with user:admin and pass:password
 - 2. create an authentication user with all the _default_ steps and with a user and password (superuser=false) which will then also be placed in the node-red (notifications service)
 
@@ -44,3 +47,4 @@ Next, for the broker to work, you need to:
 In the postman collection you have the flow of the app's business process.
 The databases are empty, so it should be possible to run each of the endpoints in the collection without making any changes. 
 In addition, this postman collection is ready to run automatically (_run collection_) and test all the endpoints quickly.
+
